@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, ImageSourcePropType, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements'
 
 import Initial from '../components/Initial';
@@ -11,6 +11,7 @@ import Google from '../assets/icons/google.png';
 import Facebook from '../assets/icons/facebook.png';
 import Apple from '../assets/icons/apple.png';
 import { normalize } from '../utils/responsive';
+import styled from 'styled-components';
 
 interface LoginProps { }
 
@@ -19,12 +20,12 @@ interface SociableButtonProps {
   title: string
 }
 
-type navProps = NativeStackNavigationProp<StackParams, 'login'>
-
+type navProps = NativeStackNavigationProp<StackParams, 'registerStepOne'>
 
 const Login: React.FC<LoginProps> = () => {
 
   const nav = useNavigation<navProps>()
+  const [email, setEmail] = React.useState('')
 
   const SociableButton = ({ title, source }: SociableButtonProps) => {
     return (
@@ -40,10 +41,26 @@ const Login: React.FC<LoginProps> = () => {
     )
   }
 
+  function onValidate() {
+    // if (!email.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i)) {
+    //   alert('Email inválido')
+    //   return
+    // }
+
+    // if (!email || email.length < 6) {
+    //   alert('Email inválido')
+    //   return
+    // }
+
+    nav.navigate('register', {
+      email
+    })
+  }
+
   return (
-    <Initial title="Olá!">
-      <TextInput style={styles.input} placeholder="E-mail" />
-      <Pressable style={styles.button} onPress={() => console.log('click')}>
+    <Initial title="Olá!" height={456}>
+      <TextInput style={styles.input} placeholder="E-mail" onChangeText={setEmail} />
+      <Pressable style={styles.button} onPress={onValidate}>
         <Text style={styles.next}>Continuar</Text>
       </Pressable>
       <Text style={styles.or}>ou</Text>
@@ -55,18 +72,13 @@ const Login: React.FC<LoginProps> = () => {
       </View>
 
       <View style={styles.groupLinks}>
-        <Text style={styles.footerText}>Não tem conta?</Text>
-        <Text
-          style={styles.footerTextGreen}
-          onPress={() => nav.navigate('register', {
-            email: "kaedehara.ky@gmail.com"
-          })}
-        >
-          Registre-se
+        <Text style={[styles.footerText, { marginRight: 10 }]}>Esqueceu sua senha?</Text>
+        <Text style={[styles.footerText, { color: '#00D599' }]}>
+          Clique aqui
         </Text>
       </View>
 
-      <Text style={styles.footerTextGreen}>Esqueceu sua senha?</Text>
+
     </Initial>
   );
 };
@@ -136,23 +148,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: '100%',
-    height: '35%',
+    height: '42%',
   },
   footerText: {
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 12,
+    lineHeight: 16,
     fontWeight: '400',
     fontStyle: 'normal',
     color: '#fff',
-    fontFamily: 'Nunito_400Regular',
-    marginRight: 10,
-  },
-  footerTextGreen: {
-    fontSize: 16,
-    lineHeight: 20,
-    fontWeight: '400',
-    fontStyle: 'normal',
-    color: '#00D599',
     fontFamily: 'Nunito_400Regular',
   },
   groupLinks: {

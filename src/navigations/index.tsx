@@ -3,17 +3,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 // screens
-import Login from '../screens/login';
+import RegisterStepOne from '../screens/register-step-one';
+import LoginSave from '../screens/login-save';
 import Register from '../screens/register';
 
 interface MainNavigationProps {
 }
 
 export type StackParams = {
-  login: undefined;
+  registerStepOne: undefined;
   register: {
-    email: string;
-  };
+    email?: string;
+  } | undefined;
+  loginSave: undefined;
 }
 
 const Stack = createStackNavigator<StackParams>();
@@ -24,7 +26,8 @@ const MainNavigation: React.FC<MainNavigationProps> = () => {
       <Stack.Navigator screenOptions={{
         headerShown: false,
       }} >
-        <Stack.Screen name="login" component={Login} />
+        <Stack.Screen name="loginSave" component={LoginSave} />
+        <Stack.Screen name="registerStepOne" component={RegisterStepOne} />
         <Stack.Screen name="register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>

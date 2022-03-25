@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import Logo from '../../assets/imgs/logo.png';
 
 interface InitialProps {
   title: string;
+  height: number;
 }
 
-const Initial: React.FC<InitialProps> = ({ title, children }) => {
+const Initial: React.FC<InitialProps> = ({ title, height, children }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
         <Image source={Logo} style={styles.logo} />
       </View>
-      <View style={styles.login}>
+      <View style={[styles.login, { height }]}>
         {children}
       </View>
     </View>
@@ -30,9 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#222431',
   },
   login: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
-    height: 456,
     backgroundColor: '#363742',
     borderRadius: 6,
     shadowColor: '#fff',

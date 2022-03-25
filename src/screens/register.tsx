@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import Initial from '../components/Initial';
 
 import { StackParams } from '../navigations';
+import Password from '../components/Password';
 
 interface RegisterProps {
   route: RouteProp<StackParams, 'register'>
@@ -14,8 +15,7 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ route }) => {
 
-  const [seePassword, setSeePassword] = useState(true)
-  const nav = useNavigation()
+  const nav = useNavigation<any>()
 
   const schema = Yup.object().shape({
     // email: Yup.string().required("Emil obrigatório").email().label('E-mail'),
@@ -37,21 +37,21 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
       onSubmit={handleRegister}
     >
       {({ values, touched, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
-        <Initial title="Registro">
+        <Initial title="Registro" height={470}>
 
           <View style={styles.containerTitle}>
             <Text style={styles.textTitle}>
               Parece que você não tem uma conta.
               Vamos criar uma conta para
               {"\u200b"}
-              <Text style={{ fontWeight: 'bold' }}>{route.params.email}</Text>
+              <Text style={{ fontWeight: 'bold' }}>{route.params?.email}</Text>
             </Text>
           </View>
 
           <View style={styles.inputs}>
             <TextInput onBlur={() => handleBlur("name")} style={styles.input} placeholder="Nome" onChangeText={handleChange("name")} />
-            {/* {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>} */}
-            <TextInput onBlur={() => handleBlur("password")} style={styles.input} placeholder="Senha" onChangeText={handleChange("password")} secureTextEntry={seePassword} />
+            {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
+            {/* <TextInput onBlur={() => handleBlur("password")} style={styles.input} placeholder="Senha" onChangeText={handleChange("password")} secureTextEntry={seePassword} />
             <Icon
               name={seePassword ? 'eye-off' : 'eye'}
               type="material-community"
@@ -60,10 +60,12 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
               containerStyle={styles.icon}
               tvParallaxProperties={undefined}
               onPress={() => setSeePassword(!seePassword)}
-            />
+            /> */}
+
+            <Password top={40} onBlur={() => handleBlur("password")} onChangeText={handleChange("password")} />
           </View>
 
-          <View style={{ marginTop: 12, width: '95%' }}>
+          <View style={{ marginTop: 30, width: '95%' }}>
             <Text style={styles.text}>
               Ao selecionar aceito e continuar, você aceita os
               <Text style={[styles.text, styles.textGreen]}> Termos de Uso </Text>
@@ -75,7 +77,7 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
 
           <Text style={[styles.text, styles.login]}>
             Já tem conta? {"\u200b"}
-            <Text style={[styles.text, styles.textGreen]} onPress={() => nav.goBack()}>
+            <Text style={[styles.text, styles.textGreen]} onPress={() => nav.navigate('loginSave')}>
               Entrar
             </Text>
           </Text>
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 20,
     color: "#FFFFFF",
 
