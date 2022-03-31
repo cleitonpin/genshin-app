@@ -1,7 +1,6 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Icon } from 'react-native-elements'
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, ToastAndroid, View } from 'react-native';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Initial from '../components/Initial';
@@ -18,10 +17,8 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
   const nav = useNavigation<any>()
 
   const schema = Yup.object().shape({
-    // email: Yup.string().required("Emil obrigatório").email().label('E-mail'),
     name: Yup.string().required("Nome obrigatório").label('Nome'),
     password: Yup.string().required("Senha obrigatória").min(6, 'Pelo menos 6 caracteres').label('Senha'),
-    // confirmPassword: Yup.string().required("Confirmação de senha obrigatória").min(6).label('Confirmação de senha'),
   })
 
   const handleRegister = async (values: any) => {
@@ -36,8 +33,10 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
       validationSchema={schema}
       onSubmit={handleRegister}
     >
-      {({ values, touched, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
+      {({ touched, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
         <Initial title="Registro" height={470}>
+          {touched.name && errors.name && ToastAndroid.show(errors.name, ToastAndroid.TOP)}
+          {touched.password && errors.password && ToastAndroid.show(errors.password, ToastAndroid.TOP)}
 
           <View style={styles.containerTitle}>
             <Text style={styles.textTitle}>
@@ -49,18 +48,7 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
           </View>
 
           <View style={styles.inputs}>
-            <TextInput onBlur={() => handleBlur("name")} style={styles.input} placeholder="Nome" onChangeText={handleChange("name")} />
-            {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
-            {/* <TextInput onBlur={() => handleBlur("password")} style={styles.input} placeholder="Senha" onChangeText={handleChange("password")} secureTextEntry={seePassword} />
-            <Icon
-              name={seePassword ? 'eye-off' : 'eye'}
-              type="material-community"
-              color="#000"
-              size={30}
-              containerStyle={styles.icon}
-              tvParallaxProperties={undefined}
-              onPress={() => setSeePassword(!seePassword)}
-            /> */}
+            <TextInput onBlur={handleBlur("name")} style={styles.input} placeholder="Nome" onChangeText={handleChange("name")} />
 
             <Password top={40} onBlur={() => handleBlur("password")} onChangeText={handleChange("password")} />
           </View>
@@ -99,7 +87,6 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
 const styles = StyleSheet.create({
   containerTitle: {
     width: '80%',
-    // height: 55,
   },
   textTitle: {
     fontFamily: 'Nunito_400Regular',
@@ -138,7 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: "#FFFFFF",
-
   },
   next: {
     fontSize: 20,
@@ -166,7 +152,6 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     fontSize: 12,
-    // marginBottom: 5o,
     fontFamily: 'Nunito_400Regular',
   }
 });
