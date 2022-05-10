@@ -28,7 +28,7 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
     //   return
     // }
 
-    nav.navigate('dashboard')
+    nav.navigate('registerStepOne')
   }
 
   return (
@@ -44,7 +44,7 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
 
       <View>
         <Password top={40} />
-        <Pressable style={styles.button} onPress={onValidate}>
+        <Pressable style={styles.button} onPress={() => nav.navigate('dashboard')}>
           <Text style={styles.next}>Continuar</Text>
         </Pressable>
       </View>
