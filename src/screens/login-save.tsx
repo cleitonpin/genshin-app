@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Initial from '../components/Initial';
 import ProfileImg from '../assets/imgs/profile.gif'
-import { Icon } from 'react-native-elements';
 import Password from '../components/Password';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -29,7 +28,7 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
     //   return
     // }
 
-    nav.navigate('registerStepOne')
+    nav.navigate('dashboard')
   }
 
   return (
