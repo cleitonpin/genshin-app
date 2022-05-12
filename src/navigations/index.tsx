@@ -12,6 +12,14 @@ import Character from '../screens/character';
 interface MainNavigationProps {
 }
 
+interface ICharacter {
+  name?: string;
+  stars?: number;
+  element?: string;
+  weapon?: string;
+  imageUrl?: string;
+}
+
 export type StackParams = {
   registerStepOne: undefined;
   register: {
@@ -19,10 +27,7 @@ export type StackParams = {
   } | undefined;
   loginSave: undefined;
   dashboard: undefined;
-  character: {
-    name?: string;
-    stars?: number;
-  };
+  character: ICharacter;
 }
 
 const Stack = createStackNavigator<StackParams>();

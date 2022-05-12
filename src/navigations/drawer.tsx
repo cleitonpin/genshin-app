@@ -11,7 +11,7 @@ const Teste = () => <View />
 
 export default function DrawerNavigation() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator screenOptions={{ headerBackgroundContainerStyle: { borderColor: 'black' } }}>
       <Drawer.Screen name="Personagens" component={Dashboard} />
       <Drawer.Screen name="Rank" component={Rank} />
       {/* <Drawer.Screen name="Cozinha" component={Teste} />

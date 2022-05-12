@@ -50,35 +50,27 @@ const Rank: React.FC<RankProps> = ({ }) => {
       <View style={styles.rank}>
         <Text style={styles.visionText}>Visão geral</Text>
 
-        <View>
+        <View style={{ width: '100%', flexDirection: 'row' }}>
 
           <View style={styles.retangle}>
             <Text>SS+</Text>
           </View>
 
           <View style={styles.characters}>
-
-
-            <View style={{ width: "30%", justifyContent: 'space-between' }}>
-              <Card />
-              <Text>Albedo</Text>
-              <Text>Suporte</Text>
-            </View>
-            <View>
-              <Card />
-              <Text>Albedo</Text>
-              <Text>Suporte</Text>
-            </View>
-            <View>
-              <Card />
-              <Text>Albedo</Text>
-              <Text>Suporte</Text>
-            </View>
-
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            {/* <Text>Albedo</Text>
+              <Text>Suporte</Text> */}
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            {/* <Text>Albedo</Text>
+              <Text>Suporte</Text> */}
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
+            {/* <Text>Albedo</Text>
+              <Text>Suporte</Text> */}
           </View>
-
         </View>
-
       </View>
     </View>
   );
@@ -144,7 +136,7 @@ const styles = StyleSheet.create({
   },
   rank: {
     width: '100%',
-    height: 246,
+    height: 328.6,
     backgroundColor: '#36384A',
     marginTop: 20,
     // padding: 25,
@@ -161,24 +153,26 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   retangle: {
-    width: 108,
-    height: 177,
+    width: '30%',
+    height: '106%',
     backgroundColor: '#EF5350',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    top: -23,
+    // position: 'absolute',
+    // top: -23,
     borderBottomLeftRadius: 6,
 
   },
   characters: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    // backgroundColor: 'black',
     alignItems: 'center',
-    position: 'absolute',
-    right: 43,
-    top: -25,
-    // width: 90,
+    // position: 'absolute',
+    // right: 43,
+    // top: -25,
+    width: '70%',
+    flexWrap: 'wrap',
     // padding: 35,
   }
 });

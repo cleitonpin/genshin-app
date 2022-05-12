@@ -8,9 +8,40 @@ import Gelo from '../../assets/imgs/gelo.png'
 
 export interface CardProps {
   onPress?: () => void;
+  imageUrl?: string;
+  vision?: string;
 }
 
-export default function Card({ onPress }: CardProps) {
+export default function Card({ onPress, imageUrl, vision }: CardProps) {
+
+  const elementIcon = {
+    Geo: "https://rerollcdn.com/GENSHIN/Elements/Element_Geo.png",
+    Pyro: "https://rerollcdn.com/GENSHIN/Elements/Element_Pyro.png",
+    Hydro: "https://rerollcdn.com/GENSHIN/Elements/Element_Hydro.png",
+    Cryo: "https://rerollcdn.com/GENSHIN/Elements/Element_Cryo.png",
+    Anemo: "https://rerollcdn.com/GENSHIN/Elements/Element_Anemo.png",
+    Electro: "https://rerollcdn.com/GENSHIN/Elements/Element_Electro.png",
+  }
+
+  // https://rerollcdn.com/GENSHIN/Characters/Qiqi.png
+  // ayato
+  // thoma
+  // itto
+  // sara
+  // rosaria
+  // yoimiya
+  // aloy
+  // ayaka
+  // eula
+  // gorou
+  // kokomi
+  // raiden
+  // sayu
+  // shenhe
+  // yae miko
+  // yanfei
+  // yun jin
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.fixedRatio} />
@@ -23,9 +54,9 @@ export default function Card({ onPress }: CardProps) {
         tvParallaxProperties={undefined}
         onPress={() => console.log('teste')}
       /> */}
-      <View style={styles.circle} >
-        <Image source={Gelo} style={{ marginRight: 5, flex: 1 }} />
-      </View>
+
+      <Image source={{ uri: elementIcon[vision] }} style={styles.circle} />
+
       {/* <Icon
         name={'favorite-border'}
         type="material"
@@ -35,7 +66,7 @@ export default function Card({ onPress }: CardProps) {
         tvParallaxProperties={undefined}
         onPress={() => console.log('teste')}
       /> */}
-      <Image source={Albedo} style={styles.image} />
+      <Image source={{ uri: imageUrl }} style={styles.image} />
     </TouchableOpacity >
   );
 }
@@ -57,8 +88,8 @@ const styles = StyleSheet.create({
     // aspectRatio: 1,
   },
   image: {
-    // width: 70,
-    // height: 70
+    width: 70,
+    height: 70
   },
   icon: {
     position: 'absolute',
@@ -68,12 +99,18 @@ const styles = StyleSheet.create({
   },
   element: {},
   circle: {
-    width: 24,
-    height: 24,
-    borderRadius: 24 / 2,
-    backgroundColor: '#36384a',
+    marginRight: 5,
+    flex: 1,
+    zIndex: 1,
+    width: 22,
+    height: 22,
+    // borderRadius: 24 / 2,
+    // backgroundColor: '#36384a',
     position: 'absolute',
     left: 56,
-    top: -10
+    top: -10,
+    borderRadius: 100,
+    padding: 3,
+    // boxShadow:' 0 3px 6px rgb(0 0 0 / 23%), 0 3px 6px rgb(0 0 0 / 16%)'
   }
 })

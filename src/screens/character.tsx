@@ -13,20 +13,21 @@ interface CharacterProps {
 
 export default function Character({ route }: CharacterProps) {
 
+  const { element, imageUrl, name, stars, weapon } = route.params
   const scrollViewReder = React.useRef<ScrollView>(null);
 
   return (
     <ScrollView style={styles.scrollView} ref={scrollViewReder}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image source={Albedo} style={{ width: 70, height: 70 }} />
+          <Image source={{ uri: imageUrl }} style={{ width: 70, height: 70 }} />
 
           <View>
-            <Text style={styles.title}>{route.params.name}</Text>
+            <Text style={styles.title}>{name}</Text>
 
             <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles.subtitle, { color: '#49B9BE' }]}>Anemo</Text>
-              <Text style={[styles.subtitle, { color: '#ffffff' }]}>Espada</Text>
+              <Text style={[styles.subtitle, { color: '#49B9BE' }]}>{element}</Text>
+              <Text style={[styles.subtitle, { color: '#ffffff' }]}>{weapon}</Text>
 
             </View>
           </View>
@@ -51,7 +52,7 @@ export default function Character({ route }: CharacterProps) {
         </View>
 
         <View style={styles.geral}>
-          <Text style={styles.buttonText}>{route.params.name}</Text>
+          <Text style={styles.buttonText}>{name}</Text>
           <Text style={[styles.buttonText, { fontSize: 12, color: '#A7B1C1' }]}>
             Lorem ipsum dolor sit amet, consectetur elit.
             Pellentesque maximus laoreet quam a ultricies.
@@ -132,9 +133,10 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     backgroundColor: '#636963',
-    height: 106,
+    // height: 106,
     alignItems: 'center',
     padding: 25,
+    paddingTop: 60,
     justifyContent: 'flex-start',
     flexDirection: 'row',
   },
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     width: '100%',
-
+    paddingBottom: 10
   },
   button: {
     padding: 20,
