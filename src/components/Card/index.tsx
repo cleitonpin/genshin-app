@@ -10,18 +10,24 @@ export interface CardProps {
   onPress?: () => void;
   imageUrl?: string;
   vision?: string;
+  constellation?: string
 }
 
-export default function Card({ onPress, imageUrl, vision }: CardProps) {
+interface Element {
+  [key: string]: string
+}
 
-  const elementIcon = {
-    Geo: "https://rerollcdn.com/GENSHIN/Elements/Element_Geo.png",
-    Pyro: "https://rerollcdn.com/GENSHIN/Elements/Element_Pyro.png",
-    Hydro: "https://rerollcdn.com/GENSHIN/Elements/Element_Hydro.png",
-    Cryo: "https://rerollcdn.com/GENSHIN/Elements/Element_Cryo.png",
-    Anemo: "https://rerollcdn.com/GENSHIN/Elements/Element_Anemo.png",
-    Electro: "https://rerollcdn.com/GENSHIN/Elements/Element_Electro.png",
+export default function Card({ onPress, imageUrl, vision, constellation }: CardProps) {
+
+  const elementIcon: Element = {
+    "Geo": "https://rerollcdn.com/GENSHIN/Elements/Element_Geo.png",
+    "Pyro": "https://rerollcdn.com/GENSHIN/Elements/Element_Pyro.png",
+    "Hydro": "https://rerollcdn.com/GENSHIN/Elements/Element_Hydro.png",
+    "Cryo": "https://rerollcdn.com/GENSHIN/Elements/Element_Cryo.png",
+    "Anemo": "https://rerollcdn.com/GENSHIN/Elements/Element_Anemo.png",
+    "Electro": "https://rerollcdn.com/GENSHIN/Elements/Element_Electro.png",
   }
+
 
   // https://rerollcdn.com/GENSHIN/Characters/Qiqi.png
   // ayato
@@ -55,7 +61,7 @@ export default function Card({ onPress, imageUrl, vision }: CardProps) {
         onPress={() => console.log('teste')}
       /> */}
 
-      <Image source={{ uri: elementIcon[vision] }} style={styles.circle} />
+      <Image source={{ uri: elementIcon[vision ?? "Cryo"] }} style={styles.circle} />
 
       {/* <Icon
         name={'favorite-border'}
@@ -67,11 +73,29 @@ export default function Card({ onPress, imageUrl, vision }: CardProps) {
         onPress={() => console.log('teste')}
       /> */}
       <Image source={{ uri: imageUrl }} style={styles.image} />
+      {constellation && <View style={styles.constellations}>
+        <Text style={styles.constellationText}>{constellation}</Text>
+      </View>}
+
     </TouchableOpacity >
   );
 }
 
 const styles = StyleSheet.create({
+  constellations: {
+    flexDirection: 'row',
+    backgroundColor: '#222431',
+    padding: 5,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
+  constellationText: {
+    fontWeight: '600',
+    lineHeight: 20,
+    fontSize: 13,
+    color: '#a7b1c1'
+  },
   container: {
     // flex: 1,
     flexDirection: 'row',
@@ -80,6 +104,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     backgroundColor: '#36384a',
+    elevation: 5,
     marginTop: 40,
   },
   fixedRatio: {

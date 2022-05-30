@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { Image, ImageSourcePropType, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Button, Icon } from 'react-native-elements'
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import Initial from '../components/Initial';
 import { StackParams } from '../navigations';
@@ -10,15 +10,10 @@ import { StackParams } from '../navigations';
 import Google from '../assets/icons/google.png';
 import Facebook from '../assets/icons/facebook.png';
 import Apple from '../assets/icons/apple.png';
-import { normalize } from '../utils/responsive';
-import styled from 'styled-components';
+import SociableButton from '../components/SociableButton';
+import { registerValidator } from '../utils/validators';
 
 interface LoginProps { }
-
-interface SociableButtonProps {
-  source: ImageSourcePropType
-  title: string
-}
 
 type navProps = NativeStackNavigationProp<StackParams, 'registerStepOne'>
 
@@ -27,34 +22,22 @@ const Login: React.FC<LoginProps> = () => {
   const nav = useNavigation<navProps>()
   const [email, setEmail] = React.useState('')
 
-  const SociableButton = ({ title, source }: SociableButtonProps) => {
-    return (
-      <View style={{ position: 'relative' }}>
-        <Image source={source} style={styles.iconSociable} />
-        <Button
-          title={title}
-          type="outline"
-          titleStyle={styles.titleStyle}
-          buttonStyle={styles.buttonElements}
-        />
-      </View>
-    )
-  }
-
-  function onValidate() {
-    // if (!email.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i)) {
-    //   alert('Email inválido')
-    //   return
-    // }
-
-    // if (!email || email.length < 6) {
-    //   alert('Email inválido')
-    //   return
-    // }
-
-    nav.navigate('register', {
-      email
-    })
+  async function onValidate() {
+    registerValidator.validate({ email }, { abortEarly: false })
+      .then(() => {
+        nav.navigate('register', {
+          email
+        })
+      })
+      .catch(err => {
+        err.errors.forEach((error: any) => {
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: error,
+          })
+        });
+      })
   }
 
   return (
@@ -120,29 +103,6 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingBottom: 13,
     fontFamily: 'Nunito_400Regular',
-  },
-  buttonElements: {
-    backgroundColor: '#E5F8F2',
-    borderRadius: 6,
-    height: 50,
-    color: '#010204'
-  },
-  titleStyle: {
-    fontSize: normalize(11),
-    lineHeight: 25,
-    fontWeight: '600',
-    fontStyle: 'normal',
-    color: '#010204',
-    marginLeft: 16,
-    fontFamily: 'Nunito_400Regular',
-  },
-  iconSociable: {
-    width: 30,
-    height: 30,
-    position: 'absolute',
-    left: 43,
-    top: 10,
-    zIndex: 1,
   },
   groupSociables: {
     flexDirection: 'column',

@@ -1,78 +1,108 @@
-import * as React from 'react';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { TextInput } from 'react-native-gesture-handler';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
-import Gelo from '../assets/imgs/gelo2.png';
-import Terra from '../assets/imgs/terra.png';
-import Raio from '../assets/imgs/raio.png';
-import Vento from '../assets/imgs/vento.png';
-import Fogo from '../assets/imgs/fogo.png';
-
-import Arco from '../assets/imgs/bow.png';
-import Espadao from '../assets/imgs/broadsword.png';
-import Espada from '../assets/imgs/sword.png';
-import Lanca from '../assets/imgs/spear.png';
-import Livro from '../assets/imgs/book.png';
 import Card from '../components/Card';
+import { tierList } from '../services/character';
+import RankLoading from '../components/Loading/RankLoading';
+import Filter from '../components/Filter';
 
-interface RankProps {
+interface RankProps { }
 
+interface Tier {
+  [key: string]: Array<{
+    name: string;
+    icon: string;
+    designation: string;
+    constellation: string;
+    vision: string;
+  }>;
 }
 
-const Rank: React.FC<RankProps> = ({ }) => {
+const colorRank: { [key: string]: string } = {
+  "SS+": "#EF5350",
+  "S+": "#ff7f7f",
+  "S": "#ffbf7f",
+  "A": "#ffff7f",
+  "B": "#bfff7f",
+  "C": "#7fff7f",
+}
+
+const Rank: React.FC<RankProps> = () => {
+
+  const [tiers, setTiers] = React.useState<Tier>({})
+  const [search, setSearch] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
+  const keys = Object.keys(tiers)
+
+  React.useEffect(() => {
+    getTierList();
+  }, [search])
+
+  const getTierList = async () => {
+    try {
+      setLoading(true)
+      const ranks = await tierList(search);
+      setTiers(ranks.data)
+    } catch {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error loading characters',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.topHeader}>
-        <Text style={styles.title}>MELHORES PERSONAGENS</Text>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>BEST CHARACTERS TIER LIST</Text>
 
-        <TextInput style={styles.input} placeholder='Busque por um personagem' placeholderTextColor={'#53566e'} />
-      </View>
-
-      <View style={styles.options}>
-        <View style={styles.group}>
-          <Image source={Vento} />
-          <Image source={Gelo} />
-          <Image source={Raio} />
-          <Image source={Terra} />
-          <Image source={Fogo} />
-
+          {/* <TextInput style={styles.input} placeholder='Busque por um personagem' placeholderTextColor={'#53566e'} /> */}
         </View>
-        <View style={styles.group}>
-          <Image source={Arco} />
-          <Image source={Livro} />
-          <Image source={Espadao} />
-          <Image source={Lanca} />
-          <Image source={Espada} />
-        </View>
+        <Filter setSearch={setSearch} />
+
+        {loading ? <RankLoading /> :
+
+          <View style={styles.rank}>
+            <View style={styles.characters}>
+              {keys.map((key, index) => {
+
+                return (
+                  <View style={styles.personajes} key={index}>
+                    <View style={[styles.retangle, { backgroundColor: colorRank[key] }]}>
+                      <Text style={styles.tier_rank}>{key}</Text>
+                    </View>
+
+                    {tiers[key].map((character, index) => {
+                      const { name, designation, constellation, vision, icon } = character
+
+                      return (
+                        <View style={styles.tier} key={index}>
+                          <Card
+                            // onPress={() => nav.navigate('character', obj)}
+                            imageUrl={icon}
+                            vision={vision}
+                            constellation={constellation}
+                          />
+
+                          <View style={styles.info}>
+                            <Text style={styles.name}>{name}</Text>
+                            <Text style={styles.designation}>{designation}</Text>
+                          </View>
+                        </View>
+                      )
+                    })}
+                  </View>
+                )
+              })}
+            </View>
+          </View>}
       </View>
-
-      <View style={styles.rank}>
-        <Text style={styles.visionText}>Visão geral</Text>
-
-        <View style={{ width: '100%', flexDirection: 'row' }}>
-
-          <View style={styles.retangle}>
-            <Text>SS+</Text>
-          </View>
-
-          <View style={styles.characters}>
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            {/* <Text>Albedo</Text>
-              <Text>Suporte</Text> */}
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            {/* <Text>Albedo</Text>
-              <Text>Suporte</Text> */}
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            <Card imageUrl='https://rerollcdn.com/GENSHIN/Characters/Razor.png' vision='Electro' />
-            {/* <Text>Albedo</Text>
-              <Text>Suporte</Text> */}
-          </View>
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -84,8 +114,39 @@ const styles = StyleSheet.create({
     padding: 35,
     alignContent: 'flex-start'
   },
-  topHeader: {
-
+  personajes: {
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: '#272937',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollView: {
+    flex: 0.5,
+    backgroundColor: '#222431',
+  },
+  tier: {
+    padding: 5,
+    height: 'auto',
+    // width: '50%',
+    // flex: 1,
+    // backgroundColor: '#000',
+  },
+  element: {
+    width: 35,
+    height: 35,
+    margin: 8
+  },
+  tier_rank: {
+    color: '#1d1f29',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  info: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontFamily: 'Nunito_400Regular',
@@ -128,15 +189,32 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   group: {
-    padding: 10,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '75%',
+    justifyContent: 'center',
+    padding: 10,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
+  },
+  name: {
+    fontFamily: 'Nunito_400Regular',
+    fontWeight: 'bold',
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#FFFFFF',
+    marginTop: 5
+  },
+  designation: {
+    fontFamily: 'Nunito_400Regular',
+    color: '#a7b1c1',
+    fontSize: 14,
+    margin: 2,
+    overflow: 'hidden',
+    // transition: color .3s,
   },
   rank: {
     width: '100%',
-    height: 328.6,
+    height: 'auto',
     backgroundColor: '#36384A',
     marginTop: 20,
     // padding: 25,
@@ -153,14 +231,13 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   retangle: {
-    width: '30%',
-    height: '106%',
-    backgroundColor: '#EF5350',
+    width: '100%',
+    height: 70,
     alignItems: 'center',
     justifyContent: 'center',
     // position: 'absolute',
     // top: -23,
-    borderBottomLeftRadius: 6,
+    // borderBottomLeftRadius: 6,
 
   },
   characters: {
@@ -171,8 +248,9 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // right: 43,
     // top: -25,
-    width: '70%',
+    // width: '70%',
     flexWrap: 'wrap',
+    height: 'auto'
     // padding: 35,
   }
 });

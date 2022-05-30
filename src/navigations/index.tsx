@@ -18,13 +18,63 @@ interface ICharacter {
   element?: string;
   weapon?: string;
   imageUrl?: string;
+  character?: ICharacterState;
+}
+
+interface ICharacterState extends ICharacter {
+  id: number;
+  name: string;
+  description: string;
+  vision: string;
+  weapon: string;
+  rarity: string;
+  icon: string;
+  skillTalents: Array<{
+    name: string;
+    unlock: string;
+    description: string;
+    icon: string;
+  }>;
+  passiveTalents: Array<{
+    name: string;
+    unlock: string;
+    description: string;
+    icon: string;
+  }>;
+  constellations: Array<{
+    name: string;
+    unlock: string;
+    description: string;
+    icon: string;
+  }>;
+  upgrades: Array<{
+    rank: string;
+    level: string;
+    cost: string;
+    material_one: {
+      name: string;
+      icon: string;
+    }
+    material_two: {
+      name: string;
+      icon: string;
+    }
+    material_three: {
+      name: string;
+      icon: string;
+    }
+    material_four: {
+      name: string;
+      icon: string;
+    }
+  }>
 }
 
 export type StackParams = {
   registerStepOne: undefined;
   register: {
-    email?: string;
-  } | undefined;
+    email: string;
+  };
   loginSave: undefined;
   dashboard: undefined;
   character: ICharacter;

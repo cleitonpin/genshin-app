@@ -2,23 +2,58 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 import { View } from "react-native";
 
+import DrawerContent from "../components/Drawer";
+import DrawerItems from "../components/Drawer/items";
+import HeaderRight from "../components/HeaderRight";
+
 import Dashboard from "../screens/dashboard";
 import Rank from "../screens/rank";
+import Weapons from "../screens/weapons";
 
 const Drawer = createDrawerNavigator();
 
-const Teste = () => <View />
-
 export default function DrawerNavigation() {
   return (
-    <Drawer.Navigator screenOptions={{ headerBackgroundContainerStyle: { borderColor: 'black' } }}>
+    <Drawer.Navigator
+      drawerContent={props => <DrawerItems {...props} />}
+      screenOptions={({ navigation }) => ({
+        drawerStyle: {
+          backgroundColor: '#222431',
+          // width: '100%',
+
+        },
+        drawerLabelStyle: {
+          color: '#fff',
+          fontSize: 16,
+          fontFamily: 'Nunito_400Regular',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: 22,
+        },
+        headerLeft: () => (<View />),
+        headerRight: () => <HeaderRight navigation={navigation} />,
+        headerTitleStyle: {
+          fontFamily: 'Nunito_400Regular',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          fontSize: 16,
+          lineHeight: 22,
+          color: '#FFFFFF',
+        },
+        headerStyle: {
+          backgroundColor: '#222431',
+          elevation: 1,
+        }
+      })}
+
+    >
       <Drawer.Screen name="Personagens" component={Dashboard} />
-      <Drawer.Screen name="Rank" component={Rank} />
+      <Drawer.Screen name="Tier List" component={Rank} />
+      <Drawer.Screen name="Weapons" component={Weapons} />
       {/* <Drawer.Screen name="Cozinha" component={Teste} />
       <Drawer.Screen name="Artefatos" component={Teste} />
       <Drawer.Screen name="Suporte" component={Teste} />
       <Drawer.Screen name="Favoritos" component={Teste} /> */}
-      <Drawer.Screen name="Sair" component={Teste} />
     </Drawer.Navigator>
   );
 }

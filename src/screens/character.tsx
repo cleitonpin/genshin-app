@@ -1,11 +1,13 @@
 import { RouteProp } from '@react-navigation/native';
 import * as React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { GestureResponderEvent, Image, LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { StackParams } from '../navigations';
 
 import Albedo from '../assets/imgs/albedo.png'
 import skill1 from '../assets/imgs/skill1.png'
+import { keyframes } from 'styled-components';
+import Table from '../components/Table';
 
 interface CharacterProps {
   route: RouteProp<StackParams, 'character'>
@@ -13,11 +15,24 @@ interface CharacterProps {
 
 export default function Character({ route }: CharacterProps) {
 
-  const { element, imageUrl, name, stars, weapon } = route.params
+  const { element, imageUrl, name, stars, weapon, character } = route.params
   const scrollViewReder = React.useRef<ScrollView>(null);
+  const constellationsRef = React.useRef<View>(null);
+
+  const [scrollY, setScrollY] = React.useState(0);
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    console.log(e.nativeEvent.layout.height);
+    // scrollViewReder.current?.scrollTo({ x, y, animated: true });
+  }
+
+  const osPressTouch = () => {
+    // get y position of the constellations
+    // const y = constellationsRef.current?.getBoundingClientRect().top;
+  }
 
   return (
-    <ScrollView style={styles.scrollView} ref={scrollViewReder}>
+    <ScrollView style={styles.scrollView} ref={scrollViewReder} >
       <View style={styles.container}>
         <View style={styles.header}>
           <Image source={{ uri: imageUrl }} style={{ width: 70, height: 70 }} />
@@ -37,10 +52,10 @@ export default function Character({ route }: CharacterProps) {
           <Pressable style={styles.button} onPress={() => console.log('teste')}>
             <Text style={styles.buttonText}>Visão geral</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => console.log('teste')}>
+          <Pressable style={styles.button} onPress={() => scrollViewReder.current?.scrollTo({ y: 470, animated: true })}>
             <Text style={styles.buttonText}>Habilidades</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={() => console.log('teste')}>
+          <Pressable style={styles.button} onPress={osPressTouch}>
             <Text style={styles.buttonText}>Constelações</Text>
           </Pressable>
           {/* <Pressable style={styles.button} onPress={() => console.log('teste')}>
@@ -60,66 +75,84 @@ export default function Character({ route }: CharacterProps) {
         </View>
 
         <View style={{ marginTop: 30, justifyContent: 'flex-start', width: '100%', padding: 25 }}>
-          <Text style={styles.buttonText}>{route.params.name} Habilidades</Text>
+          <Text style={[styles.buttonText, { fontWeight: 'bold', right: 10 }]}>{route.params.name} Skill Talents</Text>
 
-          <View style={styles.skill}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image source={skill1} />
-              <Text style={[styles.buttonText, { margin: 10 }]}>Garyuu Bladework</Text>
+          {character?.skillTalents.map((char, i) => {
+            return (
+              <View style={styles.skill} key={i}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <Image source={{ uri: char.icon }} style={{ width: 45, height: 45 }} />
+                  <Text style={[styles.buttonText, { margin: 10, color: "#ffd780", fontWeight: 'bold' }]}>{char.name}</Text>
+                  <Text style={[styles.buttonText, { bottom: 10, fontSize: 14, color: '#a7b1c1', fontWeight: 'bold' }]}>{char.unlock}</Text>
+                </View>
+
+                <View style={{ justifyContent: 'flex-start', }}>
+                  <Text style={[styles.textSkill, { color: '#A7B1C1', fontSize: 13, }]}>
+                    {char.description}
+                  </Text>
+                  {/* <Text style={styles.textSkill}>Ataque normal</Text>
+                  <Text style={styles.textSkill}>Ataque carregado</Text>
+                  <Text style={[styles.textSkill, , { color: '#A7B1C1', fontSize: 13 }]}>
+                    Pellentesque sit amet dolor non tincidunt
+                    placerat sed sit amet metus. Aliquam euismod
+                    fringilla nunc at placerat.
+                  </Text>
+                  <Text style={styles.textSkill}>Ataque imersivo</Text>
+                  <Text style={[styles.textSkill, , { color: '#A7B1C1', fontSize: 13 }]}>
+                    Pellentesque sit amet dolor non tincidunt
+                    placerat sed sit amet metus. Aliquam euismod
+                    fringilla nunc at placerat.
+                  </Text> */}
+                </View>
+              </View>
+            )
+          })}
+        </View>
+
+        <View onLayout={onLayout} ref={constellationsRef} style={{ justifyContent: 'flex-start', width: '100%', padding: 25 }}>
+          <Text style={[styles.buttonText, { fontWeight: 'bold', right: 10 }]}>{route.params.name} Constellations</Text>
+          {character?.constellations.map((char, i) => (
+            <View style={styles.skill} key={i}>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: char.icon }} style={{ width: 45, height: 45 }} />
+                <Text style={[styles.buttonText, { margin: 10, color: "#ffd780", fontWeight: 'bold' }]}>{char.name}</Text>
+                <Text style={[styles.buttonText, { bottom: 10, fontSize: 14, color: '#a7b1c1', fontWeight: 'bold' }]}>{char.unlock}</Text>
+              </View>
+              <View style={{ justifyContent: 'flex-start', }}>
+                <Text style={[styles.textSkill, { color: '#A7B1C1', fontSize: 13 }]}>
+                  {char.description}
+                </Text>
+              </View>
             </View>
-
-            <View style={{ justifyContent: 'flex-start', }}>
-              <Text style={styles.textSkill}>Ataque normal</Text>
-              <Text style={[styles.textSkill, { color: '#A7B1C1', fontSize: 13 }]}>
-                Lorem ipsum dolor sit amet, consectetur elit.
-                Pellentesque maximus laoreet quam a ultricies.
-              </Text>
-              <Text style={styles.textSkill}>Ataque carregado</Text>
-              <Text style={[styles.textSkill, , { color: '#A7B1C1', fontSize: 13 }]}>
-                Pellentesque sit amet dolor non tincidunt
-                placerat sed sit amet metus. Aliquam euismod
-                fringilla nunc at placerat.
-              </Text>
-              <Text style={styles.textSkill}>Ataque imersivo</Text>
-              <Text style={[styles.textSkill, , { color: '#A7B1C1', fontSize: 13 }]}>
-                Pellentesque sit amet dolor non tincidunt
-                placerat sed sit amet metus. Aliquam euismod
-                fringilla nunc at placerat.
-              </Text>
-            </View>
-          </View>
-
+          ))}
         </View>
 
         <View style={{ justifyContent: 'flex-start', width: '100%', padding: 25 }}>
-          <Text style={styles.buttonText}>{route.params.name} constelações</Text>
+          <Text style={[styles.buttonText, { fontWeight: 'bold', right: 10 }]}>{route.params.name} Ascension Costs</Text>
+          <Text style={[styles.buttonText, { color: '#a7b1c1', fontSize: 13, right: 10, marginBottom: 20, marginTop: 10 }]}>Raiden gets a boost Energy Recharge as they ascend</Text>
 
-          <View style={[styles.skill, { height: 231 }]}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image source={skill1} />
-              <Text style={[styles.buttonText, { margin: 10, textAlign: 'center' }]}>
-                Scarlet Hills{'\n'}
-                <Text style={[styles.buttonText, { color: '#A7B1C1', fontSize: 13 }]}> Constelação Nv. 1 </Text>
-              </Text>
 
-            </View>
-
-            <View style={{ justifyContent: 'flex-start', }}>
-              <Text style={[styles.textSkill, { color: '#A7B1C1', fontSize: 13 }]}>
-                Lorem ipsum dolor sit amet, consectetur elit.
-                Pellentesque maximus laoreet quam a ultricies.
-              </Text>
-            </View>
-          </View>
-
+          <Table upgrades={character?.upgrades} />
         </View>
-
       </View>
     </ScrollView >
   );
 };
 
 const styles = StyleSheet.create({
+  cost: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#222431',
+    fontWeight: '600',
+    padding: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderBottomRightRadius: 4,
+    // borderTopLeftRadius: 4,
+    fontSize: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#222431',
@@ -189,10 +222,11 @@ const styles = StyleSheet.create({
   },
   skill: {
     width: '100%',
-    height: 460,
+    height: 'auto',
     backgroundColor: '#2D3040',
     marginTop: 10,
     padding: 25,
+    alignSelf: 'stretch'
   },
   textSkill: {
     fontFamily: 'Nunito_400Regular',

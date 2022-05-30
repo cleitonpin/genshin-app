@@ -1,36 +1,46 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, ToastAndroid, View } from 'react-native';
-import * as Yup from 'yup';
+import Toast from 'react-native-toast-message';
 import { Formik } from 'formik';
 import Initial from '../components/Initial';
-
+import { register } from '../services/user'
 import { StackParams } from '../navigations';
 import Password from '../components/Password';
+import { userValidator } from '../utils/validators';
 
 interface RegisterProps {
   route: RouteProp<StackParams, 'register'>
 }
-
 const Register: React.FC<RegisterProps> = ({ route }) => {
 
   const nav = useNavigation<any>()
 
-  const schema = Yup.object().shape({
-    name: Yup.string().required("Nome obrigatório").label('Nome'),
-    password: Yup.string().required("Senha obrigatória").min(6, 'Pelo menos 6 caracteres').label('Senha'),
-  })
-
   const handleRegister = async (values: any) => {
-    await new Promise(resolve => setTimeout(resolve, 5000))
+    const { name: username, password } = values
 
-    // console.log(values)
+    register({
+      username,
+      password,
+      email: route.params?.email
+    })
+      .then(() => {
+        nav.navigate('dashboard')
+      })
+      .catch(err => {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Erro ao cadastrar',
+          text2: err.message
+        })
+      })
   }
 
   return (
     <Formik
       initialValues={{ name: '', password: '' }}
-      validationSchema={schema}
+      validationSchema={userValidator}
       onSubmit={handleRegister}
     >
       {({ touched, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
