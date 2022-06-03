@@ -34,6 +34,7 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
 
       nav.navigate('dashboard')
     } catch (e: any) {
+      console.log("login error", e)
       Toast.show({
         type: 'error',
         position: 'top',
@@ -43,7 +44,7 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
   }
 
   return (
-    <Initial title='Entrar' height={330}>
+    <Initial title='Sign in' height={330}>
       {isLoading ? <Lottie width={'100%'} height={'100%'} /> : <>
         <View style={styles.header}>
           {signed ? (
@@ -65,17 +66,17 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
         <View>
           <Password top={40} />
           <Pressable style={styles.button} onPress={handleLogin}>
-            <Text style={styles.next}>Continuar</Text>
+            <Text style={styles.next}>Continue</Text>
           </Pressable>
         </View>
 
         <Text style={styles.textFooter}>
-          Esqueceu sua senha?
-          <Text style={[styles.textFooter, { fontWeight: 'bold', color: '#00D599' }]}> Clique aqui</Text>
+          Forgot your password?
+          <Text style={[styles.textFooter, { fontWeight: 'bold', color: '#00D599' }]}> Click here</Text>
         </Text>
         <Text style={styles.textFooter}>
-          Não tem conta?
-          <Text style={[styles.textFooter, { fontWeight: 'bold', color: '#00D599' }]} onPress={onValidate}> Registre-se</Text>
+          Don't have account?
+          <Text style={[styles.textFooter, { fontWeight: 'bold', color: '#00D599' }]} onPress={onValidate}> Sign up</Text>
         </Text></>}
     </Initial>
   );

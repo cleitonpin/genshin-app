@@ -5,6 +5,7 @@ import { View } from "react-native";
 import DrawerContent from "../components/Drawer";
 import DrawerItems from "../components/Drawer/items";
 import HeaderRight from "../components/HeaderRight";
+import Artifacts from "../screens/artifacts";
 
 import Dashboard from "../screens/dashboard";
 import Rank from "../screens/rank";
@@ -50,6 +51,7 @@ export default function DrawerNavigation() {
       <Drawer.Screen name="Personagens" component={Dashboard} />
       <Drawer.Screen name="Tier List" component={Rank} />
       <Drawer.Screen name="Weapons" component={Weapons} />
+      <Drawer.Screen name="Artifacts" component={Artifacts} />
       {/* <Drawer.Screen name="Cozinha" component={Teste} />
       <Drawer.Screen name="Artefatos" component={Teste} />
       <Drawer.Screen name="Suporte" component={Teste} />

@@ -30,6 +30,7 @@ const Login: React.FC<LoginProps> = () => {
         })
       })
       .catch(err => {
+        console.log("regiser error", err)
         err.errors.forEach((error: any) => {
           Toast.show({
             type: 'error',
@@ -41,23 +42,23 @@ const Login: React.FC<LoginProps> = () => {
   }
 
   return (
-    <Initial title="Olá!" height={456}>
+    <Initial title="Hello!" height={456}>
       <TextInput style={styles.input} placeholder="E-mail" onChangeText={setEmail} />
       <Pressable style={styles.button} onPress={onValidate}>
-        <Text style={styles.next}>Continuar</Text>
+        <Text style={styles.next}>Continue</Text>
       </Pressable>
       <Text style={styles.or}>ou</Text>
 
       <View style={styles.groupSociables}>
-        <SociableButton title="Continuar com Facebook" source={Facebook} />
-        <SociableButton title="Continuar com Google" source={Google} />
-        <SociableButton title="Continuar com Apple" source={Apple} />
+        <SociableButton title="Continue with Facebook" source={Facebook} />
+        <SociableButton title="Continue with Google" source={Google} />
+        <SociableButton title="Continue with Apple" source={Apple} />
       </View>
 
       <View style={styles.groupLinks}>
-        <Text style={[styles.footerText, { marginRight: 10 }]}>Esqueceu sua senha?</Text>
+        <Text style={[styles.footerText, { marginRight: 10 }]}>Forgot your password?</Text>
         <Text style={[styles.footerText, { color: '#00D599' }]}>
-          Clique aqui
+          Click here
         </Text>
       </View>
 
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     color: '#8E8DA5',
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: 14,
+    lineHeight: 21,
   },
   button: {
     alignItems: 'center',

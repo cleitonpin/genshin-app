@@ -1,16 +1,23 @@
 import { RouteProp } from '@react-navigation/native';
 import * as React from 'react';
-import { GestureResponderEvent, Image, LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Image, ImageBackground, LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StackParams } from '../navigations';
 
-import Albedo from '../assets/imgs/albedo.png'
-import skill1 from '../assets/imgs/skill1.png'
-import { keyframes } from 'styled-components';
-import Table from '../components/Table';
+
+import Card from '../components/Card';
+import FalseTable from '../components/Table/falseTable';
 
 interface CharacterProps {
   route: RouteProp<StackParams, 'character'>
+}
+
+const elementColor: { [key: string]: string } = {
+  "Electro": "#ffacff",
+  "Anemo": "#80ffd7",
+  "Cryo": "#9ff",
+  "Hydro": "#80c0ff",
+  "Geo": "#ffe699",
+  "Pyro": "#f99"
 }
 
 export default function Character({ route }: CharacterProps) {
@@ -34,29 +41,35 @@ export default function Character({ route }: CharacterProps) {
   return (
     <ScrollView style={styles.scrollView} ref={scrollViewReder} >
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Image source={{ uri: imageUrl }} style={{ width: 70, height: 70 }} />
+        <ImageBackground
+          source={{ uri: "https://rerollcdn.com/GENSHIN/UI/character-background.png" }}
+          style={styles.imageBackground}
+          resizeMode="cover"
+          blurRadius={5}
+          imageStyle={{ opacity: 0.3 }}
+        >
+          <View style={styles.header}>
+            <Card imageUrl={imageUrl} vision={element} stars={stars} />
 
-          <View>
-            <Text style={styles.title}>{name}</Text>
-
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles.subtitle, { color: '#49B9BE' }]}>{element}</Text>
-              <Text style={[styles.subtitle, { color: '#ffffff' }]}>{weapon}</Text>
-
+            <View style={{ top: 20 }}>
+              <Text style={styles.title}>{name}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={[styles.subtitle, { color: elementColor[element ?? ''] }]}>{element}</Text>
+                <Text style={[styles.subtitle, { color: '#ffffff' }]}>{weapon}</Text>
+              </View>
             </View>
           </View>
-        </View>
+        </ImageBackground>
 
         <View style={styles.buttons}>
-          <Pressable style={styles.button} onPress={() => console.log('teste')}>
+          {/* <Pressable style={styles.button} onPress={() => console.log('teste')}>
             <Text style={styles.buttonText}>Visão geral</Text>
-          </Pressable>
+          </Pressable> */}
           <Pressable style={styles.button} onPress={() => scrollViewReder.current?.scrollTo({ y: 470, animated: true })}>
-            <Text style={styles.buttonText}>Habilidades</Text>
+            <Text style={styles.buttonText}>Skills</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={osPressTouch}>
-            <Text style={styles.buttonText}>Constelações</Text>
+            <Text style={styles.buttonText}>Constellarions</Text>
           </Pressable>
           {/* <Pressable style={styles.button} onPress={() => console.log('teste')}>
             <Text style={styles.buttonText}>Equipamentos</Text>
@@ -74,7 +87,7 @@ export default function Character({ route }: CharacterProps) {
           </Text>
         </View>
 
-        <View style={{ marginTop: 30, justifyContent: 'flex-start', width: '100%', padding: 25 }}>
+        <View style={styles.talents}>
           <Text style={[styles.buttonText, { fontWeight: 'bold', right: 10 }]}>{route.params.name} Skill Talents</Text>
 
           {character?.skillTalents.map((char, i) => {
@@ -132,7 +145,7 @@ export default function Character({ route }: CharacterProps) {
           <Text style={[styles.buttonText, { color: '#a7b1c1', fontSize: 13, right: 10, marginBottom: 20, marginTop: 10 }]}>Raiden gets a boost Energy Recharge as they ascend</Text>
 
 
-          <Table upgrades={character?.upgrades} />
+          <FalseTable upgrades={character?.upgrades} />
         </View>
       </View>
     </ScrollView >
@@ -153,6 +166,20 @@ const styles = StyleSheet.create({
     // borderTopLeftRadius: 4,
     fontSize: 10,
   },
+  imageBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    zIndex: 1,
+    alignItems: 'center',
+  },
+  talents: {
+    marginTop: 30,
+    justifyContent: 'flex-start',
+    width: '100%',
+    padding: 25
+  },
   container: {
     flex: 1,
     backgroundColor: '#222431',
@@ -165,8 +192,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    backgroundColor: '#636963',
-    // height: 106,
+    // backgroundColor: '#35404d',
     alignItems: 'center',
     padding: 25,
     paddingTop: 60,

@@ -1,93 +1,71 @@
-import * as React from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import RankLoading from "../Loading/RankLoading";
 import { Table as T, Row } from 'react-native-table-component';
-
 interface TableProps {
-  upgrades: any;
+  loading: boolean;
+  data: Array<Array<{}>>;
+  tableHead: Array<string>;
+  widthArr: Array<number>;
 }
 
-const tableHead = ['Rank', 'Level', 'Cost', 'Mat #1', 'Mat #2', 'Mat #3', 'Mat #4']
-const widthArr = [60, 60, 80, 150, 120, 140, 160]
-
-export default function Table({ upgrades }: TableProps) {
-
-  const tableData: string[][] = []
-
-  for (let i = 0; i < upgrades.length; i += 1) {
-    let rowData = [];
-    const {
-      rank,
-      level,
-      cost,
-      material_one,
-      material_two,
-      material_three,
-      material_four
-    } = upgrades[i]
-
-    rowData.push(rank);
-    rowData.push(level);
-    rowData.push(cost);
-    rowData.push(material_one.name.replace('\n', ' '));
-    rowData.push(material_two.name.replace('\n', ' '));
-    rowData.push(material_three.name.replace('\n', ' '));
-    rowData.push(material_four.name.replace('\n', ' '));
-    tableData.push(rowData);
-  }
-
+const Table: React.FC<TableProps> = ({ data, loading, tableHead, widthArr }) => {
   return (
-    <View style={styles.container}>
-      <ScrollView horizontal={true}>
-        <View>
-          <T >
-            <Row data={tableHead} widthArr={widthArr} style={styles.header} textStyle={styles.text} />
-          </T>
-          <ScrollView style={styles.dataWrapper}>
+    <>
+      {loading ? <RankLoading /> :
+        <ScrollView style={styles.dataWrapper} horizontal>
+          <View>
+            <T>
+              <Row data={tableHead} widthArr={widthArr} style={styles.header} textStyle={styles.text} />
+            </T>
             <T>
               {
-                tableData.map((rowData, index) => (
+                data.map((rowData, index) => (
                   <Row
                     key={index}
                     data={rowData}
                     widthArr={widthArr}
+                    // height={100}
                     style={[styles.row, index % 2 ? { backgroundColor: '#222431' } : {}]}
                     textStyle={styles.text}
                   />
                 ))
               }
             </T>
-          </ScrollView>
-        </View>
-      </ScrollView>
-    </View>
+          </View>
+        </ScrollView>
+      }
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
   header: {
     height: 50,
     backgroundColor: '#1d1f29'
+  },
+  dataWrapper: {
+    marginTop: 15,
+  },
+  row: {
+    height: 140,
+    backgroundColor: '#272937',
+    borderColor: '#1d1f29',
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    elevation: 6,
   },
   text: {
     textAlign: 'center',
     fontFamily: 'Nunito_400Regular',
     fontWeight: '600',
     fontStyle: 'normal',
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 21,
     /* identical to box height */
-    color: '#FFFFFF',
-  },
-  dataWrapper: {
-    marginTop: -1
-  },
-  row: {
-    height: 60,
-    backgroundColor: '#272937'
+    color: '#FFF',
   },
 
 })
+
+export default Table;

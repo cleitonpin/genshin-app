@@ -14,7 +14,7 @@ const Password: React.FC<PasswordProps> = ({ top, onBlur, onChangeText }) => {
 
   return (
     <View>
-      <TextInput onBlur={onBlur} onChangeText={onChangeText} style={styles.input} placeholder="Senha" secureTextEntry={seePassword} />
+      <TextInput onBlur={onBlur} onChangeText={onChangeText} style={styles.input} placeholder="Password" secureTextEntry={seePassword} />
       <Icon
         name={seePassword ? 'eye-off' : 'eye'}
         type="material-community"

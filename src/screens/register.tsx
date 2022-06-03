@@ -44,45 +44,45 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
       onSubmit={handleRegister}
     >
       {({ touched, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
-        <Initial title="Registro" height={470}>
+        <Initial title="Register" height={470}>
           {touched.name && errors.name && ToastAndroid.show(errors.name, ToastAndroid.TOP)}
           {touched.password && errors.password && ToastAndroid.show(errors.password, ToastAndroid.TOP)}
 
           <View style={styles.containerTitle}>
             <Text style={styles.textTitle}>
-              Parece que você não tem uma conta.
-              Vamos criar uma conta para
+              It looks like you don't have an account.
+              Let's create an account for you.
               {"\u200b"}
               <Text style={{ fontWeight: 'bold' }}>{route.params?.email}</Text>
             </Text>
           </View>
 
           <View style={styles.inputs}>
-            <TextInput onBlur={handleBlur("name")} style={styles.input} placeholder="Nome" onChangeText={handleChange("name")} />
+            <TextInput onBlur={handleBlur("name")} style={styles.input} placeholder="Name" onChangeText={handleChange("name")} />
 
             <Password top={40} onBlur={() => handleBlur("password")} onChangeText={handleChange("password")} />
           </View>
 
           <View style={{ marginTop: 30, width: '95%' }}>
             <Text style={styles.text}>
-              Ao selecionar aceito e continuar, você aceita os
-              <Text style={[styles.text, styles.textGreen]}> Termos de Uso </Text>
-              <Text style={{ color: "#02E3A1" }}>e</Text>
-              <Text style={[styles.text, styles.textGreen]}> Política de Privacidade</Text>
+              By selecting I accept and continuing, you accept the
+              <Text style={[styles.text, styles.textGreen]}> Terms of use </Text>
+              <Text style={{ color: "#02E3A1" }}>and</Text>
+              <Text style={[styles.text, styles.textGreen]}> Privacy Policy</Text>
             </Text>
 
           </View>
 
           <Text style={[styles.text, styles.login]}>
-            Já tem conta? {"\u200b"}
+            Have account? {"\u200b"}
             <Text style={[styles.text, styles.textGreen]} onPress={() => nav.navigate('loginSave')}>
-              Entrar
+              Sign in
             </Text>
           </Text>
 
           {isSubmitting ? <ActivityIndicator size={27.3} color="#ddd4d4" style={styles.button} /> : (
             <Pressable style={styles.button} onPress={() => handleSubmit()}>
-              <Text style={styles.next}>Aceito e continuar</Text>
+              <Text style={styles.next}>I accept and continue</Text>
             </Pressable>
           )}
 
@@ -96,15 +96,16 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
 
 const styles = StyleSheet.create({
   containerTitle: {
-    width: '80%',
+    width: '100%',
   },
   textTitle: {
     fontFamily: 'Nunito_400Regular',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: 18,
-    lineHeight: 24,
-    color: "#fff"
+    fontSize: 15,
+    lineHeight: 21,
+    color: "#fff",
+    // width: '100%'
   },
   inputs: {
     width: '100%',

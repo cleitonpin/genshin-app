@@ -49,7 +49,8 @@ export default function Dashboard(props: DashboardProps) {
       setLoading(true)
       const response = await getCharacters(search)
       setCharacters(response.data.characters)
-    } catch {
+    } catch (e) {
+      console.log("dashboard error", e)
       Toast.show({
         type: 'error',
         position: 'top',

@@ -1,23 +1,22 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { TextInput } from 'react-native-gesture-handler';
 
-import Albedo from '../../assets/imgs/albedo.png'
-import Gelo from '../../assets/imgs/gelo.png'
+import star from '../../assets/imgs/star.png'
 
 export interface CardProps {
   onPress?: () => void;
   imageUrl?: string;
   vision?: string;
   constellation?: string
+  stars?: number;
 }
 
 interface Element {
   [key: string]: string
 }
 
-export default function Card({ onPress, imageUrl, vision, constellation }: CardProps) {
+export default function Card({ onPress, imageUrl, vision, constellation, stars }: CardProps) {
 
   const elementIcon: Element = {
     "Geo": "https://rerollcdn.com/GENSHIN/Elements/Element_Geo.png",
@@ -27,26 +26,6 @@ export default function Card({ onPress, imageUrl, vision, constellation }: CardP
     "Anemo": "https://rerollcdn.com/GENSHIN/Elements/Element_Anemo.png",
     "Electro": "https://rerollcdn.com/GENSHIN/Elements/Element_Electro.png",
   }
-
-
-  // https://rerollcdn.com/GENSHIN/Characters/Qiqi.png
-  // ayato
-  // thoma
-  // itto
-  // sara
-  // rosaria
-  // yoimiya
-  // aloy
-  // ayaka
-  // eula
-  // gorou
-  // kokomi
-  // raiden
-  // sayu
-  // shenhe
-  // yae miko
-  // yanfei
-  // yun jin
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -72,7 +51,19 @@ export default function Card({ onPress, imageUrl, vision, constellation }: CardP
         tvParallaxProperties={undefined}
         onPress={() => console.log('teste')}
       /> */}
-      <Image source={{ uri: imageUrl }} style={styles.image} />
+
+      <View>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+
+        {stars && stars > 0 && stars <= 5 &&
+          <View style={styles.stars}>
+            {[...Array(stars)].map((_, i) => (
+              <Image source={star} style={styles.star} key={i} />
+            ))}
+          </View>
+        }
+      </View>
+
       {constellation && <View style={styles.constellations}>
         <Text style={styles.constellationText}>{constellation}</Text>
       </View>}
@@ -96,6 +87,22 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#a7b1c1'
   },
+  stars: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 20,
+    position: 'absolute',
+    bottom: -7,
+    left: 4,
+    zIndex: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  star: {
+    width: 16,
+    height: 16,
+    marginLeft: -8,
+  },
   container: {
     // flex: 1,
     flexDirection: 'row',
@@ -106,6 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#36384a',
     elevation: 5,
     marginTop: 40,
+    borderRadius: 4,
   },
   fixedRatio: {
     backgroundColor: '#36384a',
