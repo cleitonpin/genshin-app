@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     color: '#8E8DA5',
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 26,
-    marginTop: 30
+    marginTop: 20
   },
   icon: {
     position: 'absolute',

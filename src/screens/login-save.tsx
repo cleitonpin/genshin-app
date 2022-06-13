@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import Initial from '../components/Initial';
 import ProfileImg from '../assets/imgs/profile.gif'
@@ -9,6 +9,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackParams } from '../navigations';
 import { useAuth } from '../contexts/AuthContext';
 import Lottie from '../components/Loading/Lottie';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface LoginSaveProps {
 }
@@ -17,7 +18,9 @@ type navProps = NativeStackNavigationProp<StackParams, 'loginSave'>
 
 const LoginSave: React.FC<LoginSaveProps> = (props) => {
 
-  const { signIn, currentUser, signed, isLoading } = useAuth()
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const { signIn, currentUser, signed, isLoading, signOut, setCurrentUser } = useAuth()
   const nav = useNavigation<navProps>()
 
   function onValidate() {
@@ -27,14 +30,10 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
 
   async function handleLogin() {
     try {
-      await signIn({
-        email: 'kaedehara@gmail.com',
-        password: '123456'
-      })
+      await signIn({ email, password })
 
       nav.navigate('dashboard')
     } catch (e: any) {
-      console.log("login error", e)
       Toast.show({
         type: 'error',
         position: 'top',
@@ -43,28 +42,47 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
     }
   }
 
+  React.useEffect(() => {
+    // AsyncStorage.clear()
+    console.log('signed', signed)
+  }, [])
+
+  const logout = async () => {
+    signOut()
+    AsyncStorage.clear();
+    setCurrentUser(null)
+  }
+
   return (
     <Initial title='Sign in' height={330}>
       {isLoading ? <Lottie width={'100%'} height={'100%'} /> : <>
         <View style={styles.header}>
           {signed ? (
             <>
-              <Image source={ProfileImg} style={styles.img} />
+              <Image source={{ uri: currentUser?.user.img_url }} style={styles.img} />
               <View style={styles.info}>
-                <Text style={styles.text}>{currentUser?.username || 'po'}</Text>
-                <Text style={[styles.text, { fontSize: 13 }]}>{currentUser?.email || 'kaedehara@gmail.com'}</Text>
+                <Text style={styles.text}>{currentUser?.user.username}</Text>
+                <Text style={[styles.text, { fontSize: 13 }]}>{currentUser?.user.email}</Text>
+                <TouchableOpacity style={styles.touchable} onPress={logout}>
+                  <Text style={[styles.text, { color: '#11dd77' }]}>Switch account</Text>
+                </TouchableOpacity>
               </View>
             </>
           ) : (
             <>
-              <Text>LOGA AI</Text>
+              <TextInput
+                // onBlur={onBlur} 
+                onChangeText={setEmail}
+                style={styles.input}
+                placeholder="Email"
+              />
             </>
           )}
 
         </View>
 
         <View>
-          <Password top={40} />
+          <Password top={30} onChangeText={setPassword} />
           <Pressable style={styles.button} onPress={handleLogin}>
             <Text style={styles.next}>Continue</Text>
           </Pressable>
@@ -90,6 +108,16 @@ const styles = StyleSheet.create({
   },
   info: {
     flexDirection: 'column'
+  },
+  input: {
+    width: '100%',
+    height: 49,
+    borderRadius: 6,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    color: '#8E8DA5',
+    fontSize: 16,
+    lineHeight: 22,
   },
   img: {
     width: 50,
@@ -132,6 +160,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     color: "#FFFFFF",
+  },
+  touchable: {
+    marginTop: 5,
+
+    fontSize: 10,
+    color: '#92db0a',
+    // elevation: 3,
+    // backgroundColor: '#01C38E',
+
   }
 })
 

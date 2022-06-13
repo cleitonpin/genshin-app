@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Image, ImageBackground, LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StackParams } from '../navigations';
 
-
 import Card from '../components/Card';
 import FalseTable from '../components/Table/falseTable';
+import AdMob from '../components/AdMob';
 
 interface CharacterProps {
   route: RouteProp<StackParams, 'character'>
@@ -86,6 +86,8 @@ export default function Character({ route }: CharacterProps) {
             Pellentesque maximus laoreet quam a ultricies.
           </Text>
         </View>
+
+        <AdMob />
 
         <View style={styles.talents}>
           <Text style={[styles.buttonText, { fontWeight: 'bold', right: 10 }]}>{route.params.name} Skill Talents</Text>

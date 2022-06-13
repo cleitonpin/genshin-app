@@ -3,10 +3,9 @@ import React from "react";
 import { View } from "react-native";
 
 import DrawerContent from "../components/Drawer";
-import DrawerItems from "../components/Drawer/items";
 import HeaderRight from "../components/HeaderRight";
-import Artifacts from "../screens/artifacts";
 
+import Artifacts from "../screens/artifacts";
 import Dashboard from "../screens/dashboard";
 import Rank from "../screens/rank";
 import Weapons from "../screens/weapons";
@@ -16,7 +15,7 @@ const Drawer = createDrawerNavigator();
 export default function DrawerNavigation() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <DrawerItems {...props} />}
+      drawerContent={props => <DrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         drawerStyle: {
           backgroundColor: '#222431',
@@ -48,7 +47,7 @@ export default function DrawerNavigation() {
       })}
 
     >
-      <Drawer.Screen name="Personagens" component={Dashboard} />
+      <Drawer.Screen name="Characters" component={Dashboard} />
       <Drawer.Screen name="Tier List" component={Rank} />
       <Drawer.Screen name="Weapons" component={Weapons} />
       <Drawer.Screen name="Artifacts" component={Artifacts} />

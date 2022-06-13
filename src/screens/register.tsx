@@ -60,7 +60,7 @@ const Register: React.FC<RegisterProps> = ({ route }) => {
           <View style={styles.inputs}>
             <TextInput onBlur={handleBlur("name")} style={styles.input} placeholder="Name" onChangeText={handleChange("name")} />
 
-            <Password top={40} onBlur={() => handleBlur("password")} onChangeText={handleChange("password")} />
+            <Password top={30} onBlur={() => handleBlur("password")} onChangeText={handleChange("password")} />
           </View>
 
           <View style={{ marginTop: 30, width: '95%' }}>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     color: '#8E8DA5',
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 26,
   },
   icon: {

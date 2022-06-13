@@ -27,12 +27,14 @@ import { useAuth } from '../contexts/AuthContext';
 import { getCharacters } from '../services/character';
 import RankLoading from '../components/Loading/RankLoading';
 import Filter from '../components/Filter';
+import AdMob from '../components/AdMob';
 
 
 export default function Dashboard(props: DashboardProps) {
 
   const nav = useNavigation<any>()
 
+  // const { token } = useAuth()
   const [characters, setCharacters] = React.useState([])
   const [search, setSearch] = React.useState('')
   const [loading, setLoading] = React.useState(true)
@@ -42,7 +44,6 @@ export default function Dashboard(props: DashboardProps) {
   React.useEffect(() => {
     loadCharacters()
   }, [search])
-
 
   const loadCharacters = async () => {
     try {
@@ -70,10 +71,10 @@ export default function Dashboard(props: DashboardProps) {
         </View>
 
         <Filter setSearch={setSearch} />
-
+        <AdMob />
         <View style={styles.cards}>
           {loading ? <RankLoading /> :
-            characters?.map((character: ICharacter) => {
+            characters?.map((character: ICharacter, i) => {
               const url = `${URL}${character.icon}`
               const obj = {
                 name: character.name,
@@ -86,14 +87,13 @@ export default function Dashboard(props: DashboardProps) {
 
               return (
                 <Card
-                  key={character.id}
+                  key={i}
                   onPress={() => nav.navigate('character', obj)}
                   imageUrl={url}
                   vision={character.vision}
                 />
               )
             })}
-          {/* <Card onPress={() => nav.navigate('character', { name: 'Kazuha', stars: 5 })} /> */}
         </View>
       </View>
     </ScrollView>

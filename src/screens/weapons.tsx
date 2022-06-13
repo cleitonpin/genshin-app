@@ -7,6 +7,7 @@ import { getWeapons } from '../services/weapons';
 
 import Filter from '../components/Filter';
 import Table from '../components/Table';
+import AdMob from '../components/AdMob';
 
 interface WeaponsProps { }
 
@@ -82,7 +83,7 @@ const Weapons: React.FC<WeaponsProps> = (props) => {
         </View>
 
         <Filter setSearch={setSearch} weapon={!!weapons} />
-
+        <AdMob />
         <Table data={weapons} loading={loading} tableHead={tableHead} widthArr={widthArr} />
       </View>
     </ScrollView>

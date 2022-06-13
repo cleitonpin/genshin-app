@@ -18,7 +18,10 @@ export const getCharacters = async (search?: string) => {
     const { data, status } = await api.get(`/en/characters`, {
       params: {
         vision: search
-      }
+      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
     })
 
     return {
@@ -26,6 +29,7 @@ export const getCharacters = async (search?: string) => {
       status
     }
   } catch (error: any) {
+    console.log(error.response.data)
     throw new Error(error.response.data.message, error.response.status)
   }
 }

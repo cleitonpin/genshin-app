@@ -6,6 +6,7 @@ import Card from '../components/Card';
 import { tierList } from '../services/character';
 import RankLoading from '../components/Loading/RankLoading';
 import Filter from '../components/Filter';
+import AdMob from '../components/AdMob';
 
 interface RankProps { }
 
@@ -65,7 +66,7 @@ const Rank: React.FC<RankProps> = () => {
           {/* <TextInput style={styles.input} placeholder='Busque por um personagem' placeholderTextColor={'#53566e'} /> */}
         </View>
         <Filter setSearch={setSearch} />
-
+        <AdMob />
         {loading ? <RankLoading /> :
 
           <View style={styles.rank}>

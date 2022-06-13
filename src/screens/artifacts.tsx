@@ -8,6 +8,7 @@ import { getArtifacts } from '../services/artifacts';
 
 import star from '../assets/imgs/star.png'
 import Table from '../components/Table';
+import AdMob from '../components/AdMob';
 
 interface ArtifactsProps { }
 
@@ -97,6 +98,7 @@ const Artifacts: React.FC<ArtifactsProps> = (props) => {
           </Text>
         </View>
 
+        <AdMob />
         <Table data={artifacts} loading={loading} tableHead={tableHead} widthArr={widthArr} />
       </View>
     </ScrollView>

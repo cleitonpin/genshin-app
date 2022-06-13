@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: '100%'
+    // justifyContent: "center",
+    // alignItems: "center",
+    // height: '100%'
   }
 });
 

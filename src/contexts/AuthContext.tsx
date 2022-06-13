@@ -5,10 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IUserSignIn, login, register, User } from "../services/user";
 
 type ICurrentUser = {
-  username?: string;
-  email?: string;
-  img?: string;
-  isLogged?: boolean;
+  token?: string;
+  user: {
+    username?: string;
+    email?: string;
+    img_url?: string;
+    isLogged?: boolean;
+    _id?: string;
+  }
 }
 
 type AuthContextProps = {
@@ -16,10 +20,12 @@ type AuthContextProps = {
   currentUser: ICurrentUser | null;
   setCurrentUser: Dispatch<SetStateAction<ICurrentUser | null>>;
   signIn: ({ email, password }: IUserSignIn) => Promise<void>;
-  signOut: (callback: () => void) => void;
+  signOut: (callback?: () => void) => void;
   signUp: (params: User) => void;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  token: string;
+  updateField: (field: string, value: string) => void;
 };
 
 const AuthContext = createContext({} as AuthContextProps);
@@ -29,7 +35,7 @@ export const AuthProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const signIn = async ({ email, password }: IUserSignIn) => {
-    if (currentUser?.isLogged) return;
+    if (currentUser?.user.isLogged) return;
 
     const user = await login({ email, password })
 
@@ -45,7 +51,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const signOut = async (callback?: () => void) => {
     setIsLoading(true);
-    setCurrentUser((old) => ({ ...old, isLogged: false }));
+    setCurrentUser((old) => ({ user: { ...old?.user, isLogged: false } }));
 
     await AsyncStorage.setItem('wiki.currentUser', JSON.stringify({
       ...currentUser,
@@ -67,6 +73,12 @@ export const AuthProvider = ({ children }: any) => {
       .finally(() => setIsLoading(false));
   }
 
+  const updateField = async (field: string, value: string) => {
+    const user = { ...currentUser?.user, [field]: value }
+    setCurrentUser({ ...currentUser, user });
+    await AsyncStorage.setItem('wiki.currentUser', JSON.stringify(user));
+  }
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       setIsLoading(true);
@@ -78,8 +90,9 @@ export const AuthProvider = ({ children }: any) => {
 
       setCurrentUser(current);
     }
+
     fetchCurrentUser().finally(() => {
-      setTimeout(() => setIsLoading(false), 500);
+      setIsLoading(false)
     });
   }, []);
 
@@ -93,7 +106,9 @@ export const AuthProvider = ({ children }: any) => {
         signOut,
         signUp,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        updateField,
+        token: currentUser?.token || ''
       }}
     >
       {children}

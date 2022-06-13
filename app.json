@@ -17,14 +17,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-6726960531565247~9414475883"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "genshin.app"
+      "package": "genshin.app",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-6726960531565247~9414475883"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
