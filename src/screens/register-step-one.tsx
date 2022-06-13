@@ -30,7 +30,6 @@ const Login: React.FC<LoginProps> = () => {
         })
       })
       .catch(err => {
-        console.log("regiser error", err)
         err.errors.forEach((error: any) => {
           Toast.show({
             type: 'error',

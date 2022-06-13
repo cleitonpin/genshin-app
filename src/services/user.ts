@@ -52,8 +52,6 @@ export const update = async (body: object, token: string, id: string) => {
       status: fetch.status
     }
   } catch (error: any) {
-    console.log('erroi aqy')
-    console.log(error.response.data)
     throw new Error(error.response.data.message, error.response.status)
   }
 }

@@ -12,7 +12,6 @@ const AdMob: React.FC<any> = (props) => {
       <AdMobBanner
         bannerSize="fullBanner"
         adUnitID="ca-app-pub-3940256099942544/6300978111"
-      // onAdFailedToLoad={(error: any) => console.log(error)}
       />
     </View>
   )

@@ -64,13 +64,22 @@ export const AuthProvider = ({ children }: any) => {
 
   const signUp = async (params: User) => {
     setIsLoading(true);
-    register(params)
-      .then(async (user: any) => {
-        setCurrentUser(user)
-        // await AsyncStorage.setItem('wiki.currentUser', JSON.stringify(user));
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
+
+    await register(params)
+
+    const userLogged = await login({
+      email: params.email,
+      password: params.password
+    })
+
+    if (userLogged.status === 200) {
+      setCurrentUser(userLogged.data);
+      await AsyncStorage.setItem('wiki.currentUser', JSON.stringify(
+        { ...userLogged.data, isLogged: true }
+      ))
+    }
+
+    setIsLoading(false)
   }
 
   const updateField = async (field: string, value: string) => {

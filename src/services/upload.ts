@@ -29,7 +29,6 @@ async function getPhoto(id: string): Promise<any> {
 
   const url = await getDownloadURL(ref(storageRef));
 
-  console.log(url)
   return url;
 }
 

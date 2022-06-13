@@ -37,7 +37,6 @@ export default function Card({ onPress, imageUrl, vision, constellation, stars }
         size={23}
         containerStyle={[styles.icon]}
         tvParallaxProperties={undefined}
-        onPress={() => console.log('teste')}
       /> */}
 
       <Image source={{ uri: elementIcon[vision ?? "Cryo"] }} style={styles.circle} />
@@ -49,7 +48,6 @@ export default function Card({ onPress, imageUrl, vision, constellation, stars }
         size={23}
         containerStyle={[styles.element]}
         tvParallaxProperties={undefined}
-        onPress={() => console.log('teste')}
       /> */}
 
       <View>

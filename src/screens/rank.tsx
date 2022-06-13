@@ -46,7 +46,6 @@ const Rank: React.FC<RankProps> = () => {
       const ranks = await tierList(search);
       setTiers(ranks.data)
     } catch (e) {
-      console.log("rank error", e)
       Toast.show({
         type: 'error',
         position: 'top',

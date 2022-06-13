@@ -29,7 +29,6 @@ export const getCharacters = async (search?: string) => {
       status
     }
   } catch (error: any) {
-    console.log(error.response.data)
     throw new Error(error.response.data.message, error.response.status)
   }
 }

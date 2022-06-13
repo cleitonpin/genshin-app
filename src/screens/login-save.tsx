@@ -42,11 +42,6 @@ const LoginSave: React.FC<LoginSaveProps> = (props) => {
     }
   }
 
-  React.useEffect(() => {
-    // AsyncStorage.clear()
-    console.log('signed', signed)
-  }, [])
-
   const logout = async () => {
     signOut()
     AsyncStorage.clear();

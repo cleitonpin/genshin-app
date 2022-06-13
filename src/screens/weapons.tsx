@@ -62,7 +62,6 @@ const Weapons: React.FC<WeaponsProps> = (props) => {
 
       setWeapons(weapons)
     } catch (e: any) {
-      console.log("  error", e)
       Toast.show({
         type: 'error',
         position: 'top',

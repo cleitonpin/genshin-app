@@ -8,33 +8,33 @@ import { register } from '../services/user'
 import { StackParams } from '../navigations';
 import Password from '../components/Password';
 import { userValidator } from '../utils/validators';
+import { useAuth } from '../contexts/AuthContext';
 
 interface RegisterProps {
   route: RouteProp<StackParams, 'register'>
 }
 const Register: React.FC<RegisterProps> = ({ route }) => {
-
+  const { signUp } = useAuth()
   const nav = useNavigation<any>()
 
   const handleRegister = async (values: any) => {
-    const { name: username, password } = values
+    const params = {
+      username: values.name,
+      email: route.params.email,
+      ...values
+    }
+    try {
+      await signUp(params)
 
-    register({
-      username,
-      password,
-      email: route.params?.email
-    })
-      .then(() => {
-        nav.navigate('dashboard')
+      nav.navigate('dashboard')
+    } catch (e: any) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Erro ao cadastrar',
+        text2: e.message
       })
-      .catch(err => {
-        Toast.show({
-          type: 'error',
-          position: 'bottom',
-          text1: 'Erro ao cadastrar',
-          text2: err.message
-        })
-      })
+    }
   }
 
   return (
