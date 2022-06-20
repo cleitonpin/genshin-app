@@ -18,9 +18,9 @@ type navProps = NativeStackNavigationProp<StackParams, 'loginSave'>
 
 const LoginSave: React.FC<LoginSaveProps> = (props) => {
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const { signIn, currentUser, signed, isLoading, signOut, setCurrentUser } = useAuth()
+  const [email, setEmail] = React.useState(currentUser?.user.email);
+  const [password, setPassword] = React.useState('');
   const nav = useNavigation<navProps>()
 
   function onValidate() {

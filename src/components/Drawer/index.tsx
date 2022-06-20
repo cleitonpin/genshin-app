@@ -51,6 +51,12 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
     }
   };
 
+  React.useEffect(() => {
+    if (currentUser?.user?.img_url !== image) {
+      setImage(currentUser?.user?.img_url)
+    }
+  }, [currentUser?.user?.img_url])
+
   return (
     <View style={styles.container}>
       {signed &&
